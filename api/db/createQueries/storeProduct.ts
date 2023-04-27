@@ -1,7 +1,7 @@
 import {TABLES} from "../tables";
 
 export const CREATE_STORE_PRODUCTS_TABLE = `
-    CREATE TABLE ${TABLES.storeProduct}
+    CREATE TABLE IF NOT EXISTS ${TABLES.storeProduct}
     (
         upc            VARCHAR(12)    NOT NULL PRIMARY KEY,
         upc_prom       VARCHAR(12) UNIQUE,
