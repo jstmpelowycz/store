@@ -11,7 +11,7 @@ export const CREATE_INVOICES_TABLE = `
             CHECK(total >= 0),
         vat         NUMERIC(13,4) GENERATED ALWAYS AS (total * 0.2) STORED,
         FOREIGN KEY (card_id)
-            REFERENCES ${TABLES.customerCard} (id) 
+            REFERENCES ${TABLES.customerCards} (id) 
             ON UPDATE CASCADE
             ON DELETE NO ACTION,
         FOREIGN KEY (employee_id)

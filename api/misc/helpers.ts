@@ -1,4 +1,4 @@
-import * as sc from 'snakecase';
+import {snakeCase} from 'lodash'
 import {AnyObject} from "../api.typedefs";
 
 export enum Op {
@@ -6,7 +6,7 @@ export enum Op {
   Or = 'OR',
 }
 
-const asSqlKey = (key: string): string => sc(key);
+const asSqlKey = (key: string): string => snakeCase(key);
 
 const asTypedValue = (value: any): any => {
   if (value === undefined || value === null) {
@@ -22,6 +22,30 @@ const asTypedValue = (value: any): any => {
       throw new Error('Unexpected type of value');
   }
 };
+
+export const asSqlValue = (value: any): number | string => {
+  if (typeof value === 'undefined') {
+    return 'null';
+  }
+
+  return typeof value === 'string'
+    ? `'${value}'`
+    : value;
+};
+
+export const mapFieldsWithSqlValueWrapper = (fields: AnyObject) => (
+  Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => (
+      [key, asSqlValue(value)]
+    ))
+  )
+);
+
+export const combineInsertValues = (fields: AnyObject): string => (
+  Object.values(fields)
+    .map(asSqlValue)
+    .join(', ')
+);
 
 export const combineEqualityFilters = (filters: AnyObject, op: Op) => {
   return Object.entries(filters)

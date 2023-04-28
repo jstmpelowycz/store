@@ -1,15 +1,15 @@
-import {Client} from "pg";
+import {Client, Pool} from "pg";
 import {Logger, LoggerInput} from "../logger/logger.typedefs";
 import {AnyAsyncFunction, Throwable} from "../../../api.typedefs";
 import {AsyncQueryWrapper} from "./repository.typedefs";
 import {RepositoryError} from "./repository.constants";
 
 export class Repository {
-  private readonly client: Client;
+  private readonly pool: Pool;
   private readonly logger: Logger;
 
-  constructor(client: Client) {
-    this.client = client;
+  constructor(pool: Pool) {
+    this.pool = pool;
     this.logger = console;
   }
 
@@ -17,12 +17,12 @@ export class Repository {
     const wrapper = await this.createQueryWrapper<RT>();
 
     return wrapper(async () => {
-      await this.client.query(query);
+      await this.pool.query(query);
     });
   }
 
   private async createQueryWrapper<RT>(): Throwable<AsyncQueryWrapper<RT>> {
-    await this.client.connect();
+    await this.pool.connect();
 
     return async (callback: AnyAsyncFunction) => {
       try {
@@ -35,7 +35,7 @@ export class Repository {
           },
         });
       } finally {
-        await this.client.end();
+        await this.pool.end();
       }
     }
   }

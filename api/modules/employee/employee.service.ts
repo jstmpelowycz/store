@@ -1,20 +1,19 @@
-import {Client} from "pg";
+import {Pool} from "pg";
 import {bcryptClient} from "../../auth/bcrypt.client";
 import {Service} from "../utils/service/service";
 import {EmployeeRepository} from "./employee.repository";
 import {CreateEmployeeFields, Employee} from "./employee.typedefs";
 import {Throwable} from "../../api.typedefs";
 import {EmployeeError} from "./employee.constants";
-import {Op} from "../../misc/op";
 
 export class EmployeeService extends Service {
   private readonly encoder = bcryptClient;
   private employeeRepository: EmployeeRepository;
 
-  constructor(client: Client) {
-    super(client);
+  constructor(pool: Pool) {
+    super(pool);
 
-    this.employeeRepository = new EmployeeRepository(client);
+    this.employeeRepository = new EmployeeRepository(pool);
   }
 
   protected async validateLogInSucceeded(
@@ -24,12 +23,7 @@ export class EmployeeService extends Service {
     try {
       const {
         password: validPasswordHash,
-      } = await this.employeeRepository.findOneByFilters({
-        op: Op.And,
-        filters: {
-          email,
-        },
-      });
+      } = await this.employeeRepository.getByEmail(email);
 
       await this.validateAttemptPassword(attemptPassword, validPasswordHash);
     } catch (error) {
@@ -85,10 +79,13 @@ export class EmployeeService extends Service {
     return Boolean(employee);
   }
 
-  protected async createWithEncodedPassword(
+  public async createWithEncodedPassword(
     fields: CreateEmployeeFields,
   ): Promise<Employee> {
     const fieldsWithEncodedPassword = await this.withPasswordEncoded(fields);
+
+    // eslint-disable-next-line
+    console.log(fieldsWithEncodedPassword);
 
     return this.employeeRepository.create(fieldsWithEncodedPassword);
   }

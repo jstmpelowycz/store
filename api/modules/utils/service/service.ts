@@ -1,13 +1,13 @@
-import {Client} from "pg";
+import {Pool} from "pg";
 import {Throwable} from "../../../api.typedefs";
 import {Logger, LoggerInput} from "../logger/logger.typedefs";
 
 export class Service {
-  private readonly client: Client;
+  private readonly pool: Pool;
   private readonly logger: Logger;
 
-  constructor(client: Client) {
-    this.client = client;
+  constructor(pool: Pool) {
+    this.pool = pool;
     this.logger = console;
   }
 

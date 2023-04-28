@@ -15,7 +15,7 @@ export const CREATE_SALES_TABLE = `
             ON UPDATE CASCADE
             ON DELETE NO ACTION,
         FOREIGN KEY (store_product_upc)
-            REFERENCES ${TABLES.storeProduct}(upc)
+            REFERENCES ${TABLES.storeProducts}(upc)
             ON UPDATE CASCADE
             ON DELETE NO ACTION
     )
