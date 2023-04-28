@@ -11,8 +11,8 @@ interface CategoryAveragePrice {
   average: number;
 }
 
-
 export class StoreProductService {
+  // @Danylo - Q1
   public async getStoreProductsRevenue(): Promise<StoreProductsRevenue[]> {
     const {rows} = await pool.query(`
         SELECT p.name,
@@ -27,6 +27,7 @@ export class StoreProductService {
     return rows;
   }
 
+  // @Danylo - Q2
   public async getStoreProductsNeverSoldByEmployees(
     employeeId: number,
   ): Promise<StoreProduct[]> {
@@ -46,6 +47,7 @@ export class StoreProductService {
     return rows;
   }
 
+  // @Dmytro H. - Q1
   public async getAllNonPromotionalSoldStoreProducts(): Promise<string[]> {
     const {rows} = await pool.query(`
         SELECT p.name
@@ -67,6 +69,7 @@ export class StoreProductService {
     return rows;
   }
 
+  // @Dmytro H. - Q2
   public async getCategoryAveragePrice(categoryName: string): Promise<CategoryAveragePrice> {
     const {rows} = await pool.query(`
         SELECT c.name                AS category_name,
