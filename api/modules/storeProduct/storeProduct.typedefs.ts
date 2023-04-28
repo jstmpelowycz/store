@@ -1,5 +1,3 @@
-import {NonIdentifiable} from "../../api.typedefs";
-
 export interface StoreProduct {
   upc: string;
   upc_prom?: string;

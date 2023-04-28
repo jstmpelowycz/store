@@ -1,15 +1,39 @@
-import {Repository} from "../utils/repository/repository";
 import {CreateProductFields, Product, UpdateProductFields} from "./product.typedefs";
-import {TABLES} from "../../db/tables";
-import {combineInsertValues, mapFieldsWithSqlValueWrapper} from "../../misc/helpers";
-import * as process from "process";
+import {asSqlValue, mapFieldsWithSqlValueWrapper} from "../../misc/helpers";
+import {pool} from "../../index";
 
-export class ProductRepository extends Repository {
-  public async create(fields: CreateProductFields): Promise<Product> {
-    return this.runQuery(`
-        INSERT INTO ${TABLES.products} (name, description, category_id)
-        VALUES (${combineInsertValues(fields)});
+export class ProductRepository {
+  public async findById(id: number): Promise<Product> {
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM products
+        WHERE id = ${id};
     `);
+
+    return rows[0];
+  }
+
+  public async findAll(): Promise<Product[]> {
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM products
+        ORDER BY name;
+    `);
+
+    return rows;
+  }
+
+  public async create(fields: CreateProductFields): Promise<Product> {
+    const {name, description, category_id} = fields;
+
+    const {rows} = await pool.query(`
+        INSERT INTO products (name, description, category_id)
+        VALUES (${asSqlValue(name)},
+                ${asSqlValue(description)},
+                ${asSqlValue(category_id)});
+    `);
+
+    return rows[0];
   }
 
   public async updateById(
@@ -20,21 +44,23 @@ export class ProductRepository extends Repository {
 
     const {name, description} = processedFields;
 
-    return this.runQuery(`
-        UPDATE ${TABLES.products}
+    const {rows} = await pool.query(`
+        UPDATE products
         SET name        = '${name}',
             description = '${description}'
         WHERE id = ${id};
-    `);
+    `)
+
+    return rows[0];
   }
 
   public async destroyById(id: number): Promise<boolean> {
-    const affectedRowsCount = await this.runQuery(`
-      DELETE
-      FROM ${TABLES.products}
-      WHERE id = ${id};
+    const {rows} = await pool.query(`
+        DELETE
+        FROM products
+        WHERE id = ${id};
     `);
 
-    return affectedRowsCount !== 0;
+    return rows.length !== 0;
   }
 }

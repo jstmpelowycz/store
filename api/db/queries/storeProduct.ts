@@ -1,7 +1,5 @@
-import {TABLES} from "../tables";
-
 export const CREATE_STORE_PRODUCTS_TABLE = `
-    CREATE TABLE IF NOT EXISTS ${TABLES.storeProducts}
+    CREATE TABLE IF NOT EXISTS store_products
     (
         upc            VARCHAR(12)    NOT NULL PRIMARY KEY,
         upc_prom       VARCHAR(12) UNIQUE,
@@ -13,11 +11,11 @@ export const CREATE_STORE_PRODUCTS_TABLE = `
         product_id     INT            NOT NULL UNIQUE,
         CONSTRAINT only_two_stored_products UNIQUE (product_id, is_promotional),
         FOREIGN KEY (product_id)
-            REFERENCES ${TABLES.products} (id)
+            REFERENCES products(id)
             ON UPDATE CASCADE
             ON DELETE NO ACTION,
         FOREIGN KEY (upc_prom)
-            REFERENCES ${TABLES.storeProducts} (upc)
+            REFERENCES store_products(upc)
             ON UPDATE CASCADE
             ON DELETE SET NULL
     )

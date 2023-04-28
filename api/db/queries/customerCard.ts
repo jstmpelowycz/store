@@ -1,7 +1,6 @@
-import {TABLES} from "../tables";
 
 export const CREATE_CUSTOMER_CARDS_TABLE = `
-    CREATE TABLE IF NOT EXISTS ${TABLES.customerCards}
+    CREATE TABLE IF NOT EXISTS customer_cards
     (
         id                  VARCHAR(13) PRIMARY KEY,
         customer_last_name  VARCHAR(50) NOT NULL,

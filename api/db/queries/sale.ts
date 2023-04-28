@@ -1,7 +1,5 @@
-import {TABLES} from "../tables";
-
 export const CREATE_SALES_TABLE = `
-    CREATE TABLE IF NOT EXISTS ${TABLES.sales}
+    CREATE TABLE IF NOT EXISTS sales
     (
         store_product_upc VARCHAR(12)   NOT NULL,
         amount            INT           NOT NULL 
@@ -11,11 +9,11 @@ export const CREATE_SALES_TABLE = `
         invoice_id        VARCHAR(10)   NOT NULL,
         PRIMARY KEY (store_product_upc, invoice_id),
         FOREIGN KEY (invoice_id)
-            REFERENCES ${TABLES.invoices}(id)
+            REFERENCES invoices(id)
             ON UPDATE CASCADE
             ON DELETE NO ACTION,
         FOREIGN KEY (store_product_upc)
-            REFERENCES ${TABLES.storeProducts}(upc)
+            REFERENCES store_products(upc)
             ON UPDATE CASCADE
             ON DELETE NO ACTION
     )

@@ -1,59 +1,65 @@
-import {Repository} from "../utils/repository/repository";
 import {Category} from "./category.typedefs";
-import {FinderResult, GetterResult} from "../utils/repository/repository.typedefs";
 import {CategoryError} from "./category.constants";
-import {TABLES} from "../../db/tables";
+import {pool} from "../../index";
+import {Throwable} from "../../api.typedefs";
 
-export class CategoryRepository extends Repository {
-  public async getAll(): Promise<Category[]> {
-    return this.runQuery(`
+export class CategoryRepository {
+  public async findAll(): Promise<Category[]> {
+    const {rows: categories} = await pool.query(`
         SELECT *
-        FROM ${TABLES.categories}
+        FROM categories
         ORDER BY name;
     `);
+
+    return categories;
   }
 
-  public async findById(id: number): FinderResult<Category> {
-    return this.runQuery(`
+  public async findById(id: number): Promise<Category> {
+    const {rows} = await pool.query<Category>(`
         SELECT *
-        FROM ${TABLES.categories}
-        WHERE ${TABLES.categories}.id = ${id};
+        FROM categories
+        WHERE id = ${id};
     `);
+
+    return rows[0];
   }
 
-  public async getById(id: number): GetterResult<Category> {
+  public async getById(id: number): Promise<Throwable<Category>> {
     const category = await this.findById(id);
 
     if (!category) {
-      return this.throwError({
-        message: CategoryError.NotFound,
-        fields: {
-          id,
-        },
-      });
+      throw new Error(CategoryError.NotFound);
     }
 
     return category;
   }
 
-  public async updateNameById(
-    id: number,
-    name: string,
-  ): Promise<Category> {
-    return this.runQuery(`
-        UPDATE ${TABLES.categories}
+  public async updateById(id: number, name: string): Promise<Category> {
+    const {rows} = await pool.query(`
+        UPDATE categories
         SET name = '${name}'
         WHERE id = ${id};
     `);
+
+    return rows[0];
+  }
+
+  public async create(name: string): Promise<Category> {
+    const {rows} = await pool.query(`
+        INSERT INTO categories (name)
+        VALUES (${name});
+    `);
+
+    return rows[0];
   }
 
   public async destroyById(id: number): Promise<boolean> {
-    const affectedRowsCount = await this.runQuery(`
+    const {rows} = await pool.query(`
         DELETE
-        FROM ${TABLES.categories}
+        FROM categories
         WHERE id = ${id};
     `);
 
-    return affectedRowsCount !== 0;
+    return rows.length !== 0;
   }
 }

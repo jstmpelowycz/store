@@ -1,37 +1,25 @@
-import {Pool} from "pg";
 import {bcryptClient} from "../../auth/bcrypt.client";
-import {Service} from "../utils/service/service";
 import {EmployeeRepository} from "./employee.repository";
 import {CreateEmployeeFields, Employee} from "./employee.typedefs";
 import {Throwable} from "../../api.typedefs";
 import {EmployeeError} from "./employee.constants";
 
-export class EmployeeService extends Service {
+export class EmployeeService {
   private readonly encoder = bcryptClient;
-  private employeeRepository: EmployeeRepository;
+  private employeeRepository = new EmployeeRepository();
 
-  constructor(pool: Pool) {
-    super(pool);
-
-    this.employeeRepository = new EmployeeRepository(pool);
-  }
-
-  protected async validateLogInSucceeded(
+  public async validateLogInSucceeded(
     email: string,
     attemptPassword: string,
   ): Promise<Throwable<void>> {
-    try {
-      const {
-        password: validPasswordHash,
-      } = await this.employeeRepository.getByEmail(email);
+    const {
+      password: validPasswordHash,
+    } = await this.employeeRepository.getByEmail(email);
 
-      await this.validateAttemptPassword(attemptPassword, validPasswordHash);
-    } catch (error) {
-      // TODO: make sure client does not know exact cause
-    }
+    await this.validateAttemptPassword(attemptPassword, validPasswordHash);
   }
 
-  protected async validateAttemptPassword(
+  public async validateAttemptPassword(
     attemptPassword: string,
     validPasswordHash: string,
   ): Promise<Throwable<void>> {
@@ -41,39 +29,27 @@ export class EmployeeService extends Service {
     );
 
     if (!isValidPassword) {
-      this.throwError({
-        message: EmployeeError.CannotLogin,
-      });
+      throw new Error(EmployeeError.CannotLogin);
     }
   }
 
-  protected async validateSignUpPossible(email: string): Promise<Throwable<void>> {
+  public async validateSignUpPossible(email: string): Promise<Throwable<void>> {
     const isEmailRegistered = await this.isEmailRegistered(email);
 
     if (isEmailRegistered) {
-      this.throwError({
-        message: EmployeeError.EmailIsRegistered,
-        fields: {
-          email,
-        },
-      });
+      throw new Error(EmployeeError.EmailIsRegistered);
     }
   }
 
-  protected async validateLogInPossible(email: string): Promise<Throwable<void>> {
+  public async validateLogInPossible(email: string): Promise<Throwable<void>> {
     const isEmailRegistered = await this.isEmailRegistered(email);
 
     if (!isEmailRegistered) {
-      this.throwError({
-        message: EmployeeError.EmailIsNotRegistered,
-        fields: {
-          email,
-        },
-      });
+      throw new Error(EmployeeError.EmailIsNotRegistered);
     }
   }
 
-  protected async isEmailRegistered(email: string): Promise<boolean> {
+  public async isEmailRegistered(email: string): Promise<boolean> {
     const employee = await this.employeeRepository.findByEmail(email);
 
     return Boolean(employee);
@@ -83,9 +59,6 @@ export class EmployeeService extends Service {
     fields: CreateEmployeeFields,
   ): Promise<Employee> {
     const fieldsWithEncodedPassword = await this.withPasswordEncoded(fields);
-
-    // eslint-disable-next-line
-    console.log(fieldsWithEncodedPassword);
 
     return this.employeeRepository.create(fieldsWithEncodedPassword);
   }
