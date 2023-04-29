@@ -10,6 +10,10 @@ export const initDb = (): Pool => {
 
   const pool = new Pool(config);
 
+  // TO-FIX: probably queries run in async environment,
+  // so because of referencing by one table others emits
+  // an error that TABLE <table name> doesn't exist
+  //
   // createTables(pool);
 
   return pool;
