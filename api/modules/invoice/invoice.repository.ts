@@ -31,7 +31,6 @@ export class InvoiceRepository {
       card_id,
       print_date,
       total,
-      vat,
     } = processedFields;
 
     const {rows} = await pool.query(`
@@ -40,8 +39,7 @@ export class InvoiceRepository {
                 ${employee_id},
                 ${card_id},
                 ${print_date},
-                ${total},
-                ${vat});
+                ${total});
     `);
 
     return rows[0];
