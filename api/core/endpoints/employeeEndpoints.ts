@@ -120,7 +120,7 @@ export const employeeEndpoints = (): void => {
             })
             .catch(error => {
                 res.json({
-                    message: "An error occurred while updating employee.",
+                    message: "An error occurred while deleting employee.",
                     error: error
                 })
             })
