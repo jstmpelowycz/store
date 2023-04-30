@@ -15,13 +15,13 @@ export class StoreProductService {
   // @Danylo - Q1
   public async getStoreProductsRevenue(): Promise<StoreProductsRevenue[]> {
     const {rows} = await pool.query(`
-        SELECT p.name,
-               SUM(s.amount * s.selling_price) as revenue
-        FROM store_products sp
-                 JOIN products p ON sp.product_id = p.id
-                 JOIN sales s ON sp.upc = s.store_product_upc
-        GROUP BY p.name
-        ORDER BY revenue DESC;
+      SELECT p.name,
+             SUM(s.amount * s.selling_price) as revenue
+      FROM store_products sp
+             JOIN products p ON sp.product_id = p.id
+             JOIN sales s ON sp.upc = s.store_product_upc
+      GROUP BY p.name
+      ORDER BY revenue DESC;
     `);
 
     return rows;

@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, {FormEvent, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 // @ts-ignore
