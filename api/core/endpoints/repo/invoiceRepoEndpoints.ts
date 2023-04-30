@@ -8,12 +8,12 @@ export const invoiceRepoEndpoints = (): void => {
     app.get('/invoices', (req, res) => {
         repository.findAll()
             .then(response => {
-                res.json({
-                    data: response
+                res.status(200).json({
+                    data: response,
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: 'An error occurred while fetching invoices.',
                     error: error
                 })
@@ -37,13 +37,13 @@ export const invoiceRepoEndpoints = (): void => {
                 total: total,
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Sale added successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while creating sale.",
                     error: error
                 })
@@ -55,13 +55,13 @@ export const invoiceRepoEndpoints = (): void => {
         repository
             .destroyById(id)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Invoice deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while deleting invoice.",
                     error: error
                 })

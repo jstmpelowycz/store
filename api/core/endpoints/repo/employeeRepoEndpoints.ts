@@ -7,12 +7,12 @@ export const employeeRepoEndpoints = (): void => {
     app.get('/employees', (req, res) => {
         repository.findAll()
             .then(response => {
-                res.json({
+                res.status(200).json({
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: 'An error occurred while fetching employees.',
                     error: error
                 })
@@ -52,13 +52,13 @@ export const employeeRepoEndpoints = (): void => {
                 birth_date: birth_date
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Employee added successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while creating employee.",
                     error: error
                 })
@@ -95,13 +95,13 @@ export const employeeRepoEndpoints = (): void => {
                 zip_code: zip_code,
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Employee updated successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while updating employee.",
                     error: error
                 })
@@ -113,13 +113,13 @@ export const employeeRepoEndpoints = (): void => {
         repository
             .destroyById(id)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Employee deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while deleting employee.",
                     error: error
                 })
@@ -131,12 +131,12 @@ export const employeeRepoEndpoints = (): void => {
         repository
             .getByEmail(email)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while fetching employee by email.",
                     error: error
                 })

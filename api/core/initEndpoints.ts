@@ -7,6 +7,9 @@ import {saleRepoEndpoints} from "./endpoints/repo/saleRepoEndpoints";
 import {invoiceRepoEndpoints} from "./endpoints/repo/invoiceRepoEndpoints";
 import {customerCardRepoEndpoints} from "./endpoints/repo/customerCardRepoEndpoints";
 import {employeeServiceEndpoints} from "./endpoints/service/employeeServiceEndpoints";
+import {categoryServiceEndpoints} from "./endpoints/service/categoryServiceEndpoitns";
+import {salesServiceEndpoints} from "./endpoints/service/salesServiceEndpoints";
+import {storeProductServiceEndpoints} from "./endpoints/service/storeProductServiceEndpoints";
 
 export const initEndpoints = (): void => {
     employeeRepoEndpoints();
@@ -17,4 +20,9 @@ export const initEndpoints = (): void => {
     invoiceRepoEndpoints();
     customerCardRepoEndpoints()
     employeeServiceEndpoints();
+
+    categoryServiceEndpoints();
+    employeeServiceEndpoints();
+    salesServiceEndpoints();
+    storeProductServiceEndpoints();
 };

@@ -10,7 +10,7 @@ export const employeeServiceEndpoints = (): void => {
         const {email, password} = req.body;
         service
             .validateLogInPossible(email)
-            .then(response => {
+            .then(() => {
                 console.log("Log in is possible. Proceeding to log in.")
             })
             .catch(error => {
@@ -55,7 +55,7 @@ export const employeeServiceEndpoints = (): void => {
 
         service
             .validateSignUpPossible(email)
-            .then(response => {
+            .then(() => {
                 console.log("Proceeding to sign up.")
             })
             .catch(error => {

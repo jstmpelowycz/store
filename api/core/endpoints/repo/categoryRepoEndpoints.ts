@@ -1,5 +1,6 @@
 import {CategoryRepository} from "../../../modules/category/category.repository";
 import {app} from "../../../index";
+import {json} from "express";
 
 export const categoryRepoEndpoints = (): void => {
     const repository = new CategoryRepository();
@@ -7,12 +8,12 @@ export const categoryRepoEndpoints = (): void => {
     app.get('/categories', (req, res) => {
         repository.findAll()
             .then(response => {
-                res.json({
+                res.status(200).json({
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: 'An error occurred while fetching categories.',
                     error: error
                 })
@@ -24,13 +25,13 @@ export const categoryRepoEndpoints = (): void => {
         repository
             .create(name)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Category added successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while creating category.",
                     error: error
                 })
@@ -43,13 +44,13 @@ export const categoryRepoEndpoints = (): void => {
         repository
             .updateById(id, name)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Employee updated successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while updating employee.",
                     error: error
                 })
@@ -61,13 +62,13 @@ export const categoryRepoEndpoints = (): void => {
         repository
             .destroyById(id)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Category deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while deleting category.",
                     error: error
                 })

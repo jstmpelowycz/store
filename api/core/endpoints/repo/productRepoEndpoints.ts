@@ -8,12 +8,12 @@ export const productRepoEndpoints = (): void => {
     app.get('/products', (req, res) => {
         repository.findAll()
             .then(response => {
-                res.json({
+                res.status(200).json({
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: 'An error occurred while fetching products.',
                     error: error
                 })
@@ -29,13 +29,13 @@ export const productRepoEndpoints = (): void => {
                 category_id: category_id
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Product added successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while creating product.",
                     error: error
                 })
@@ -51,13 +51,13 @@ export const productRepoEndpoints = (): void => {
                 description: description
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Product updated successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while updating product.",
                     error: error
                 })
@@ -69,13 +69,13 @@ export const productRepoEndpoints = (): void => {
         repository
             .destroyById(id)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Product deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while deleting product.",
                     error: error
                 })

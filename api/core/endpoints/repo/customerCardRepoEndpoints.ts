@@ -8,12 +8,12 @@ export const customerCardRepoEndpoints = (): void => {
     app.get('/customer-cards', (req, res) => {
         repository.findAll()
             .then(response => {
-                res.json({
+                res.status(200).json({
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: 'An error occurred while fetching customer cards.',
                     error: error
                 })
@@ -45,13 +45,13 @@ export const customerCardRepoEndpoints = (): void => {
                 percent: percent,
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Customer card added successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while creating customer card.",
                     error: error
                 })
@@ -82,13 +82,13 @@ export const customerCardRepoEndpoints = (): void => {
                 percent: percent,
             })
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Customer card updated successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while customer card.",
                     error: error
                 })
@@ -100,13 +100,13 @@ export const customerCardRepoEndpoints = (): void => {
         repository
             .destroyById(id)
             .then(response => {
-                res.json({
+                res.status(200).json({
                     message: "Customer card deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
-                res.json({
+                res.status(500).json({
                     message: "An error occurred while deleting customer card.",
                     error: error
                 })
