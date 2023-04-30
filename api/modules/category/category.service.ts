@@ -11,6 +11,7 @@ export interface ExtendedCategoryProductsRevenue extends CategoryProductsRevenue
 }
 
 export class CategoryService {
+  // @Dmytro P. - Q1
   public async getCategoryProductsTotal(): Promise<CategoryProductsRevenue[]> {
     const {rows} = await pool.query(`
         SELECT c.name                          as category_name,
@@ -26,6 +27,7 @@ export class CategoryService {
     return rows;
   }
 
+  // @Dmytro P. — Q2
   public async getProductsTotalSoldByEmployeeRole(
     role: EmployeeRole,
   ): Promise<ExtendedCategoryProductsRevenue[]> {
