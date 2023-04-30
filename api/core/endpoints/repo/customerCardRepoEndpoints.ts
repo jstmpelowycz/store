@@ -1,8 +1,8 @@
-import {EmployeeRepository} from "../../modules/employee/employee.repository";
-import {app} from "../../index";
-import {CustomerCardRepository} from "../../modules/customerCard/customerCard.repository";
+import {EmployeeRepository} from "../../../modules/employee/employee.repository";
+import {app} from "../../../index";
+import {CustomerCardRepository} from "../../../modules/customerCard/customerCard.repository";
 
-export const customerCardEndpoints = (): void => {
+export const customerCardRepoEndpoints = (): void => {
     const repository = new CustomerCardRepository();
 
     app.get('/customer-cards', (req, res) => {

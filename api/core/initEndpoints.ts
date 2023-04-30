@@ -1,18 +1,20 @@
 import {app} from "../index";
-import {employeeEndpoints} from "./endpoints/employeeEndpoints";
-import {categoryEndpoints} from "./endpoints/categoryEndpoints";
-import {productEndpoints} from "./endpoints/productEndpoints";
-import {storeProductEndpoints} from "./endpoints/storeProductEndpoints";
-import {saleEndpoints} from "./endpoints/saleEndpoints";
-import {invoiceEndpoints} from "./endpoints/invoiceEndpoints";
-import {customerCardEndpoints} from "./endpoints/customerCardEndpoints";
+import {employeeRepoEndpoints} from "./endpoints/repo/employeeRepoEndpoints";
+import {categoryRepoEndpoints} from "./endpoints/repo/categoryRepoEndpoints";
+import {productRepoEndpoints} from "./endpoints/repo/productRepoEndpoints";
+import {storeProductRepoEndpoints} from "./endpoints/repo/storeProductRepoEndpoints";
+import {saleRepoEndpoints} from "./endpoints/repo/saleRepoEndpoints";
+import {invoiceRepoEndpoints} from "./endpoints/repo/invoiceRepoEndpoints";
+import {customerCardRepoEndpoints} from "./endpoints/repo/customerCardRepoEndpoints";
+import {employeeServiceEndpoints} from "./endpoints/service/employeeServiceEndpoints";
 
 export const initEndpoints = (): void => {
-    employeeEndpoints();
-    categoryEndpoints();
-    productEndpoints();
-    storeProductEndpoints();
-    saleEndpoints();
-    invoiceEndpoints();
-    customerCardEndpoints()
+    employeeRepoEndpoints();
+    categoryRepoEndpoints();
+    productRepoEndpoints();
+    storeProductRepoEndpoints();
+    saleRepoEndpoints();
+    invoiceRepoEndpoints();
+    customerCardRepoEndpoints()
+    employeeServiceEndpoints();
 };

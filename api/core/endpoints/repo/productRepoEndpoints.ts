@@ -1,8 +1,8 @@
-import {CategoryRepository} from "../../modules/category/category.repository";
-import {app} from "../../index";
-import {ProductRepository} from "../../modules/product/product.repository";
+import {CategoryRepository} from "../../../modules/category/category.repository";
+import {app} from "../../../index";
+import {ProductRepository} from "../../../modules/product/product.repository";
 
-export const productEndpoints = (): void => {
+export const productRepoEndpoints = (): void => {
     const repository = new ProductRepository();
 
     app.get('/products', (req, res) => {

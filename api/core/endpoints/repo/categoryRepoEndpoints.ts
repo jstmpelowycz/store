@@ -1,7 +1,7 @@
-import {CategoryRepository} from "../../modules/category/category.repository";
-import {app} from "../../index";
+import {CategoryRepository} from "../../../modules/category/category.repository";
+import {app} from "../../../index";
 
-export const categoryEndpoints = (): void => {
+export const categoryRepoEndpoints = (): void => {
     const repository = new CategoryRepository();
 
     app.get('/categories', (req, res) => {

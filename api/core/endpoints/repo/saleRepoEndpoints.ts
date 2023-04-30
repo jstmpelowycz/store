@@ -1,11 +1,11 @@
-import {SalesRepository} from "../../modules/sales/sales.repository";
-import {app} from "../../index";
-import {InvoiceRepository} from "../../modules/invoice/invoice.repository";
+import {StoreProductRepository} from "../../../modules/storeProduct/storeProduct.repository";
+import {app} from "../../../index";
+import {SalesRepository} from "../../../modules/sales/sales.repository";
 
-export const invoiceEndpoints = (): void => {
-    const repository = new InvoiceRepository();
+export const saleRepoEndpoints = (): void => {
+    const repository = new SalesRepository();
 
-    app.get('/invoices', (req, res) => {
+    app.get('/sales', (req, res) => {
         repository.findAll()
             .then(response => {
                 res.json({
@@ -14,27 +14,25 @@ export const invoiceEndpoints = (): void => {
             })
             .catch(error => {
                 res.json({
-                    message: 'An error occurred while fetching invoices.',
+                    message: 'An error occurred while fetching sales.',
                     error: error
                 })
             })
     })
 
-    app.post('/invoices', (req, res) => {
+    app.post('/sales', (req, res) => {
         const {
-            id,
-            employee_id,
-            card_id,
-            print_date,
-            total,
+            store_product_upc,
+            invoice_id,
+            amount,
+            selling_price,
         } = req.body;
         repository
             .create({
-                id: id,
-                employee_id: employee_id,
-                card_id: card_id,
-                print_date: print_date,
-                total: total,
+                store_product_upc: store_product_upc,
+                invoice_id: invoice_id,
+                selling_price: selling_price,
+                amount: amount,
             })
             .then(response => {
                 res.json({
@@ -50,19 +48,19 @@ export const invoiceEndpoints = (): void => {
             })
     })
 
-    app.delete('/invoices/:id', (req, res) => {
-        const { id } = req.params;
+    app.delete('/sales/:store_product_upc/:invoice_id', (req, res) => {
+        const { store_product_upc, invoice_id } = req.params;
         repository
-            .destroyById(id)
+            .destroyByInvoiceIdAndUpc(store_product_upc, invoice_id)
             .then(response => {
                 res.json({
-                    message: "Invoice deleted successfully.",
+                    message: "Sale deleted successfully.",
                     data: response
                 })
             })
             .catch(error => {
                 res.json({
-                    message: "An error occurred while deleting invoice.",
+                    message: "An error occurred while deleting sale.",
                     error: error
                 })
             })

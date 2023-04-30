@@ -1,8 +1,8 @@
-import {ProductRepository} from "../../modules/product/product.repository";
-import {app} from "../../index";
-import {StoreProductRepository} from "../../modules/storeProduct/storeProduct.repository";
+import {ProductRepository} from "../../../modules/product/product.repository";
+import {app} from "../../../index";
+import {StoreProductRepository} from "../../../modules/storeProduct/storeProduct.repository";
 
-export const storeProductEndpoints = (): void => {
+export const storeProductRepoEndpoints = (): void => {
     const repository = new StoreProductRepository();
 
     app.get('/store-products', (req, res) => {

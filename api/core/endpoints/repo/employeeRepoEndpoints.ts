@@ -1,7 +1,7 @@
-import {app} from "../../index";
-import {EmployeeRepository} from "../../modules/employee/employee.repository";
+import {app} from "../../../index";
+import {EmployeeRepository} from "../../../modules/employee/employee.repository";
 
-export const employeeEndpoints = (): void => {
+export const employeeRepoEndpoints = (): void => {
     const repository = new EmployeeRepository();
 
     app.get('/employees', (req, res) => {
