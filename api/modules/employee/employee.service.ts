@@ -19,7 +19,7 @@ export class EmployeeService {
     await this.validateAttemptPassword(attemptPassword, validPasswordHash);
   }
 
-  public async validateAttemptPassword(
+  private async validateAttemptPassword(
     attemptPassword: string,
     validPasswordHash: string,
   ): Promise<Throwable<void>> {
