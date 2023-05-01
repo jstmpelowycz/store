@@ -12,7 +12,7 @@ export class CustomerCardService {
       values: [customer_last_name]
     });
 
-    return rows[0];
+    return rows;
   }
 
   public async getCustomerCardsByPercent(percent: number): Promise<CustomerCard[]> {

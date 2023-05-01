@@ -13,6 +13,8 @@
     "url": "git+https://github.com/jstmpelowycz/store.git"
   },
   "devDependencies": {
-    "concurrently": "^8.0.1"
+    "@types/cors": "^2.8.13",
+    "concurrently": "^8.0.1",
+    "cors": "^2.8.5"
   }
 }

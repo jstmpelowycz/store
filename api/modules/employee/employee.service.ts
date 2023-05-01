@@ -9,15 +9,16 @@ export class EmployeeService {
   private readonly encoder = bcryptClient;
   private employeeRepository = new EmployeeRepository();
 
-  public async validateLogInSucceeded(
+  public async validateLogInSucceededAndReturnEmployee(
     email: string,
     attemptPassword: string,
-  ): Promise<Throwable<void>> {
-    const {
-      password: validPasswordHash,
-    } = await this.employeeRepository.getByEmail(email);
+  ): Promise<Throwable<Employee>> {
+    const employee = await this.employeeRepository.getByEmail(email);
+    const validPasswordHash = employee.password;
 
     await this.validateAttemptPassword(attemptPassword, validPasswordHash);
+
+    return employee;
   }
 
   private async validateAttemptPassword(

@@ -20,7 +20,7 @@ export const makeEmployeeEndpoints = (): void => {
       });
 
     service
-      .validateLogInSucceeded(email, password)
+      .validateLogInSucceededAndReturnEmployee(email, password)
       .then(response => {
         res.status(200).json({
           message: "Log in succeeded.",

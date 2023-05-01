@@ -1,15 +1,36 @@
 import {app} from "../../../index";
 import {EmployeeRepository} from "../../../modules/employee/employee.repository";
+import {Employee, EmployeeRole} from "../../../modules/employee/employee.typedefs";
+import {omit} from "lodash";
+
+const filterPassword = (obj: Employee) => {
+  return omit(obj, 'password');
+}
 
 export const makeEmployeeBaseEndpoints = (): void => {
   const repository = new EmployeeRepository();
 
-  app.get('/employees', (req, res) => {
+  app.get('/employees/:id', (req, res) => {
+    const {id} = req.params;
+
     repository.findAll()
       .then(response => {
-        res.status(200).json({
-          data: response
-        })
+        repository.findById(Number(id))
+          .then(requester => {
+            const {role} = requester;
+
+            if (role === EmployeeRole.Cashier) {
+              res.status(200).json({
+                data: [filterPassword(requester)],
+              })
+
+              return;
+            }
+
+            res.status(200).json({
+              data: response.map((obj) => filterPassword(obj))
+            })
+          })
       })
       .catch(error => {
         res.status(500).json({

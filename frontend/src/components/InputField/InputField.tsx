@@ -1,5 +1,6 @@
-import React, {ChangeEvent, FC} from "react";
-import {Form, FormControl} from "react-bootstrap";
+// @ts-ignore
+import React, {FC} from "react";
+import {Form} from "react-bootstrap";
 
 interface Props {
   label: string;
@@ -25,6 +26,7 @@ export const InputField: FC<Props> = (props) => {
       </Form.Label>
 
       <Form.Control
+        autoComplete="off"
         type={type}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}

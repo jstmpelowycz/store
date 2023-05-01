@@ -5,10 +5,20 @@ import {pool} from "../../index";
 import {Throwable} from "../../api.typedefs";
 
 export class EmployeeRepository {
-  public async create(fields: CreateEmployeeFields): Promise<Employee> {
-    // eslint-disable-next-line
-    console.log(Object.values(fields));
+  public async findById(id: number): Promise<Employee> {
+    const {rows} = await pool.query({
+      text: `
+          SELECT *
+          FROM employees
+          WHERE id = $1
+      `,
+      values: [id],
+    });
 
+    return rows[0];
+  }
+
+  public async create(fields: CreateEmployeeFields): Promise<Employee> {
     const {rows} = await pool.query({
       text: `
           INSERT INTO employees (${buildInsertQueryLeftValues(fields)})

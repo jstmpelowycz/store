@@ -1,12 +1,31 @@
 // @ts-ignore
-import React, {FC, memo} from "react";
-import {Col, Button, Row, Container, Card, Form} from "react-bootstrap";
+import React, {FC, FormEvent, memo, useState} from "react";
+import {Col, Row, Container, Card, Form, Button} from "react-bootstrap";
+// @ts-ignore
+import {InputField} from "../InputField/InputField.tsx";
+import {Maybe} from "../../typings/typedefs";
+// @ts-ignore
+import {login} from "../../hooks/login.ts";
+// @ts-ignore
+import {useAppContext} from "../../context/AppContext.tsx";
 
 interface Props {
   onSwitchAuthView: () => void;
 }
 
 export const Login: FC<Props> = ({onSwitchAuthView}) => {
+  const [email, setEmail] = useState<Maybe<string>>(null);
+  const [password, setPassword] = useState<Maybe<string>>(null);
+  const {setCurrentEmployee} = useAppContext();
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    const {data: employee} = await login({email, password});
+
+    setCurrentEmployee(employee);
+  };
+
   return (
     <Container>
       <Row className="vh-100 d-flex justify-content-center align-items-center">
@@ -15,26 +34,28 @@ export const Login: FC<Props> = ({onSwitchAuthView}) => {
             <Card.Body>
               <div className="mb-3 mt-md-4">
                 <div className="mb-3">
-                  <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label className="text-center">
-                        Email address
-                      </Form.Label>
-                      <Form.Control type="email" placeholder="Enter email"/>
-                    </Form.Group>
-
-                    <Form.Group
-                      className="mb-3"
-                      controlId="formBasicPassword"
+                  <Form onSubmit={handleSubmit}>
+                    <InputField
+                      label="Email"
+                      type="email"
+                      placeholder="example@gmail.com"
+                      controlId="formEmail"
+                      onChange={setEmail}
+                    />
+                    <InputField
+                      label="Password"
+                      type="password"
+                      placeholder="Enter password"
+                      controlId="formPassword"
+                      onChange={setPassword}
+                    />
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      className="w-100"
                     >
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control type="password" placeholder="Password"/>
-                    </Form.Group>
-                    <div className="d-grid">
-                      <Button variant="primary" type="submit">
-                        Login
-                      </Button>
-                    </div>
+                      Log In
+                    </Button>
                   </Form>
                   <div className="mt-3">
                     <p className="mb-0  text-center">

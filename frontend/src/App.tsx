@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 // @ts-ignore
 import {Login} from "./components/Login/Login.tsx";
 // @ts-ignore
@@ -8,35 +8,25 @@ import {Signup} from "./components/SignUp/Signup.tsx";
 import {Toolbar} from "./components/Toolbar/Toolbar.tsx";
 // @ts-ignore
 import {AuthPage} from "./components/AuthPage/AuthPage.tsx";
-import {AnyFunction, CreateEmployeeFields, Employee, Throwable} from "./typedefs";
-
-export const useSignup = async (
-  fields: CreateEmployeeFields,
-  onSuccess: AnyFunction
-): Promise<Throwable<Employee>> => {
-  const response = await fetch('/employee/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(fields),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to sign up employee');
-  }
-
-  onSuccess();
-
-  return response.json();
-}
+// @ts-ignore
+import {HomePage} from "./components/HomePage/HomePage.tsx";
+// @ts-ignore
+import {useAppContext} from "./context/AppContext.tsx";
 
 export const App = () => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const {currentEmployee} = useAppContext();
 
-  const handleAuthorize = (shouldAuthorize: boolean) => {
-    setIsAuthorized(shouldAuthorize);
-  }
-
-  return <AuthPage onAuthorize={handleAuthorize}/>
+  return (
+    <>
+      {!currentEmployee
+        ? <AuthPage/>
+        : (
+          <>
+            <Toolbar/>
+            <HomePage/>
+          </>
+        )
+      }
+    </>
+  )
 };
