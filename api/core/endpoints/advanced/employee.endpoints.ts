@@ -4,7 +4,7 @@ import {EmployeeService} from "../../../modules/employee/employee.service";
 export const makeEmployeeEndpoints = (): void => {
   const service = new EmployeeService();
 
-  app.post('employee/login/', (req, res) => {
+  app.post('/employee/login', (req, res) => {
     const {email, password} = req.body;
 
     service
@@ -35,7 +35,7 @@ export const makeEmployeeEndpoints = (): void => {
       })
   })
 
-  app.post('employee/signup/', (req, res) => {
+  app.post('/employee/signup', (req, res) => {
     const {
       email,
       password,
@@ -59,7 +59,7 @@ export const makeEmployeeEndpoints = (): void => {
       })
       .catch(error => {
         res.status(401).json({
-          message: "Sign up attempt is not possible. Email is not registered.",
+          message: "Sign up attempt is not possible. Email is registered.",
           data: error,
         })
       });

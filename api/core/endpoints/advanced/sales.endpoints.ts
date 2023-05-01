@@ -4,7 +4,7 @@ import {app} from "../../../index";
 export const makeSalesEndpoints = (): void => {
   const service = new SalesService();
 
-  app.post('sales/create-and-apply-promo/', (req, res) => {
+  app.post('/sales/create-and-apply-promo/', (req, res) => {
     const {store_product_upc, invoice_id, amount} = req.body
     service
       .createAndApplyPromotion({

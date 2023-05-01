@@ -1,10 +1,14 @@
 // @ts-ignore
-import React, {FormEvent, useState} from "react";
+import React, {FC, FormEvent, memo, useState} from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 // @ts-ignore
 import {InputField} from "../InputField/InputField.tsx";
 
-export const SignUp = () => {
+interface Props {
+  onSwitchAuthView: () => void;
+}
+
+export const Signup: FC<Props> = ({onSwitchAuthView}) => {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [confirmPassword, setConfirmPassword] = useState<string | null>(null);
@@ -61,7 +65,11 @@ export const SignUp = () => {
                   <div className="mt-3">
                     <p className="mb-0  text-center">
                       Already have an account?
-                      <a href="{''}" className="m-lg-2 text-primary fw-bold">
+                      <a
+                        href=""
+                        className="m-lg-2 text-primary fw-bold"
+                        onClick={onSwitchAuthView}
+                      >
                         Log In
                       </a>
                     </p>

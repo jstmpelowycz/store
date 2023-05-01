@@ -14,6 +14,12 @@ const buildSetExpression = (
   `${fieldName} = $${valueIndex + startAt + 1}`
 );
 
+export const buildInsertQueryLeftValues = (fields: AnyObject): string => {
+  return asSortedEntries(fields)
+    .map(([key, _]) => key)
+    .join(', ');
+};
+
 export const buildUpdateQuerySetPart = (fields: AnyObject, startAt = 1): string => {
   return asSortedEntries(fields)
     .filter(([_, value]) => Boolean(value))

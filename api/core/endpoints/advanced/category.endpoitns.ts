@@ -5,7 +5,7 @@ import {EmployeeRole} from "../../../modules/employee/employee.typedefs";
 export const makeCategoryEndpoints = (): void => {
   const service = new CategoryService()
 
-  app.get('category/products/total', (req, res) => {
+  app.get('/category/products/total', (req, res) => {
     service
       .getCategoryProductsTotal()
       .then(response => {
@@ -22,7 +22,7 @@ export const makeCategoryEndpoints = (): void => {
       });
   })
 
-  app.get('category/products/sold-by-employee-role/:role', (req, res) => {
+  app.get('/category/products/sold-by-employee-role/:role', (req, res) => {
     const {role} = req.params;
     const employeeRole = EmployeeRole[role as keyof typeof EmployeeRole];
 

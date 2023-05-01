@@ -4,7 +4,7 @@ import {app} from "../../../index";
 export const makeStoreProductEndpoints = (): void => {
   const service = new StoreProductService();
 
-  app.get('store-products/revenue', (req, res) => {
+  app.get('/store-products/revenue', (req, res) => {
     service
       .getStoreProductsRevenue()
       .then(response => {
@@ -21,7 +21,7 @@ export const makeStoreProductEndpoints = (): void => {
       })
   })
 
-  app.get('store-products/never-sold-by-employee/:employeeId', (req, res) => {
+  app.get('/store-products/never-sold-by-employee/:employeeId', (req, res) => {
     const employeeId = Number(req.params.employeeId);
 
     service
@@ -40,7 +40,7 @@ export const makeStoreProductEndpoints = (): void => {
       })
   })
 
-  app.get('store-products/sold-and-non-promotional', (req, res) => {
+  app.get('/store-products/sold-and-non-promotional', (req, res) => {
     service
       .getAllNonPromotionalSoldStoreProducts()
       .then(response => {

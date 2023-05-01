@@ -1,19 +1,20 @@
 import {CreateEmployeeFields, Employee, UpdateEmployeeFields} from "./employee.typedefs";
 import {EmployeeError} from "./employee.constants";
-import {buildUpdateQuerySetPart, formatQueryValues} from "../../misc/helpers";
+import {buildInsertQueryLeftValues, buildUpdateQuerySetPart, formatQueryValues} from "../../misc/helpers";
 import {pool} from "../../index";
 import {Throwable} from "../../api.typedefs";
 
 export class EmployeeRepository {
   public async create(fields: CreateEmployeeFields): Promise<Employee> {
+    // eslint-disable-next-line
+    console.log(Object.values(fields));
+
     const {rows} = await pool.query({
       text: `
-          INSERT INTO employees (email, password, last_name, first_name, patronymic,
-                                 role, salary, birth_date, employment_date,
-                                 phone_number, city, street, zip_code)
+          INSERT INTO employees (${buildInsertQueryLeftValues(fields)})
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       `,
-      values: Object.values(fields),
+      values: formatQueryValues(fields),
     });
 
     return rows[0];
