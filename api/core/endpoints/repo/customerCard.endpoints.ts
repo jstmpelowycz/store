@@ -31,6 +31,7 @@ export const makeCustomerCardBaseEndpoints = (): void => {
       zip_code,
       percent,
     } = req.body
+
     repository
       .create({
         id: id,
@@ -69,6 +70,7 @@ export const makeCustomerCardBaseEndpoints = (): void => {
       zip_code,
       percent,
     } = req.body
+
     repository
       .updateById(id, {
         customer_last_name: customer_last_name,
