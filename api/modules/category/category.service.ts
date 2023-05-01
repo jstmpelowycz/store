@@ -31,28 +31,28 @@ export class CategoryService {
   public async getProductsTotalSoldByEmployeeRole(
     role: EmployeeRole,
   ): Promise<ExtendedCategoryProductsRevenue[]> {
-    const {rows} = await pool.query(`
-        SELECT 
-            p.name AS product_name, 
-            c.name AS category_name, 
-            SUM(s.amount * s.selling_price) AS revenue
-        FROM products p
-                 JOIN categories c ON p.category_id = c.id
-                 JOIN store_products sp ON p.id = sp.product_id
-                 JOIN sales s ON sp.upc = s.store_product_upc
-        WHERE NOT EXISTS (
-                SELECT *
-                FROM invoices i
-                WHERE i.id = s.invoice_id
-                  AND i.employee_id NOT IN (
-                    SELECT id
-                    FROM employees
-                    WHERE role = ${role}
-                )
-            )
-        GROUP BY p.name, c.name
-        ORDER BY revenue DESC;
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT p.name                          AS product_name,
+                 c.name                          AS category_name,
+                 SUM(s.amount * s.selling_price) AS revenue
+          FROM products p
+                   JOIN categories c ON p.category_id = c.id
+                   JOIN store_products sp ON p.id = sp.product_id
+                   JOIN sales s ON sp.upc = s.store_product_upc
+          WHERE NOT EXISTS(
+                  SELECT *
+                  FROM invoices i
+                  WHERE i.id = s.invoice_id
+                    AND i.employee_id NOT IN (SELECT id
+                                              FROM employees
+                                              WHERE role = $1)
+              )
+          GROUP BY p.name, c.name
+          ORDER BY revenue DESC;
+      `,
+      values: [role],
+    });
 
     return rows;
   }
