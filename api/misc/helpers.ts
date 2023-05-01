@@ -6,8 +6,8 @@ export const asSqlValue = (value: any): number | string => {
   }
 
   return typeof value === 'string'
-    ? `'${value}'`
-    : value;
+    ? `${value}`
+    : Number(value);
 };
 
 export const mapFieldsWithSqlValueWrapper = (fields: AnyObject): AnyObject => (
@@ -17,3 +17,14 @@ export const mapFieldsWithSqlValueWrapper = (fields: AnyObject): AnyObject => (
     ))
   )
 );
+
+export const excludeEmptyValues = <V>(fields: Record<string, V>): V[] => {
+  return Object.values(fields).filter(Boolean);
+}
+
+export const buildUpdateQuerySetPart = (fields: AnyObject, startAt = 0): string => {
+  return Object.entries(fields)
+    .filter(([_, value]) => Boolean(value))
+    .map(([key, _], index) => `${key} = $${index + startAt + 1}`)
+    .join(', ');
+};
