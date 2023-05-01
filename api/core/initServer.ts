@@ -6,6 +6,6 @@ export const initServer = (): void => {
   const {name, port} = configClient.resolveAppConfig();
 
   app.listen(port, () => {
-    console.log(`App "${name}" is listening to port`);
+    console.log(`App "${name}" is listening to port ${port}`);
   });
 };

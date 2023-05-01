@@ -6,5 +6,5 @@ import {initEndpoints} from "./core/initEndpoints";
 export const pool = initDb();
 export const app = initAppWithMiddlewares();
 
-initServer();
 initEndpoints();
+initServer();
