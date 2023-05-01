@@ -1,6 +1,6 @@
 import {CreateCustomerCardFields, CustomerCard, UpdateCustomerCardFields} from "./customerCard.typedefs";
 import {pool} from "../../index";
-import {buildUpdateQuerySetPart, excludeEmptyValues} from "../../misc/helpers";
+import {buildUpdateQuerySetPart, formatQueryValues} from "../../misc/helpers";
 
 export class CustomerCardRepository {
   public async findById(id: string): Promise<CustomerCard> {
@@ -46,7 +46,7 @@ export class CustomerCardRepository {
           SET ${buildUpdateQuerySetPart(fields)}
           WHERE id = $1;
       `,
-      values: [id, ...excludeEmptyValues(fields)]
+      values: [id, ...formatQueryValues(fields)]
     });
 
 

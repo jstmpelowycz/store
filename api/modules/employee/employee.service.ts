@@ -80,11 +80,14 @@ export class EmployeeService {
   public async getEmployeesPhoneNumberAndAddressByLastName(
     last_name: string,
   ): Promise<EmployeesPhoneNumberAndAddress> {
-    const {rows} = await pool.query(`
-        SELECT phone_number, city, street, zip_code
-        FROM employees
-        WHERE last_name = ${last_name};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT phone_number, city, street, zip_code
+          FROM employees
+          WHERE last_name = $1;
+      `,
+      values: [last_name]
+    });
 
     return rows[0];
   }

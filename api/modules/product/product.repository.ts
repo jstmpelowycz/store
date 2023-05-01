@@ -1,14 +1,17 @@
 import {CreateProductFields, Product, UpdateProductFields} from "./product.typedefs";
-import {asSqlValue, mapFieldsWithSqlValueWrapper} from "../../misc/helpers";
+import {buildUpdateQuerySetPart, formatQueryValues} from "../../misc/helpers";
 import {pool} from "../../index";
 
 export class ProductRepository {
   public async findById(id: number): Promise<Product> {
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM products
-        WHERE id = ${id};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT *
+          FROM products
+          WHERE id = $1;
+      `,
+      values: [id]
+    });
 
     return rows[0];
   }
@@ -24,14 +27,13 @@ export class ProductRepository {
   }
 
   public async create(fields: CreateProductFields): Promise<Product> {
-    const {name, description, category_id} = fields;
-
-    const {rows} = await pool.query(`
-        INSERT INTO products (name, description, category_id)
-        VALUES (${asSqlValue(name)},
-                ${asSqlValue(description)},
-                ${asSqlValue(category_id)});
-    `);
+    const {rows} = await pool.query({
+      text: `
+          INSERT INTO products (name, description, category_id)
+          VALUES ($1, $2, $3);
+      `,
+      values: Object.values(fields)
+    });
 
     return rows[0];
   }
@@ -40,26 +42,27 @@ export class ProductRepository {
     id: number,
     fields: UpdateProductFields,
   ): Promise<Product> {
-    const processedFields = mapFieldsWithSqlValueWrapper(fields);
-
-    const {name, description} = processedFields;
-
-    const {rows} = await pool.query(`
-        UPDATE products
-        SET name        = '${name}',
-            description = '${description}'
-        WHERE id = ${id};
-    `)
+    const {rows} = await pool.query({
+      text: `
+          UPDATE products
+          SET ${buildUpdateQuerySetPart(fields)}
+          WHERE id = $1;
+      `,
+      values: [id, ...formatQueryValues(fields)]
+    })
 
     return rows[0];
   }
 
   public async destroyById(id: number): Promise<boolean> {
-    const {rows} = await pool.query(`
-        DELETE
-        FROM products
-        WHERE id = ${id};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          DELETE
+          FROM products
+          WHERE id = $1;
+      `,
+      values: [id],
+    });
 
     return rows.length !== 0;
   }

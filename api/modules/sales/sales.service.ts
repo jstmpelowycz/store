@@ -14,14 +14,18 @@ export class SalesService {
   ): Promise<Sale> {
     const {store_product_upc, invoice_id, amount} = fields;
 
-    const {rows} = await pool.query(`
-        SELECT CASE
-                   WHEN sp.is_promotional THEN (${amount} * sp.selling_price * 0.8)
-                   ELSE (${amount} * sp.selling_price)
-                   END
-        FROM store_products sp
-        WHERE sp.upc = ${store_product_upc};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT CASE
+                     WHEN sp.is_promotional
+                         THEN ($1 * sp.selling_price * 0.8)
+                     ELSE ($1 * sp.selling_price)
+                     END
+          FROM store_products sp
+          WHERE sp.upc = $2;
+      `,
+      values: [amount, store_product_upc],
+    });
 
     const sellingPrice = rows[0];
 
@@ -43,11 +47,14 @@ export class SalesService {
   ): Promise<Throwable<void>> {
     const {store_product_upc, amount} = options;
 
-    const {rows} = await pool.query(`
-        SELECT amount
-        FROM store_products
-        WHERE upc = ${store_product_upc}
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT amount
+          FROM store_products
+          WHERE upc = $1
+      `,
+      values: [store_product_upc]
+    });
 
     const retrievedAmount = rows[0];
 

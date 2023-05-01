@@ -55,18 +55,21 @@ export class StoreProductService {
   public async getStoreProductsNeverSoldByEmployees(
     employeeId: number,
   ): Promise<StoreProduct[]> {
-    const {rows} = await pool.query(`
-        SELECT *
-        FROM store_products sp
-        WHERE NOT EXISTS(
-                SELECT *
-                FROM sales s
-                WHERE s.store_product_upc = sp.upc
-                  AND s.invoice_id NOT IN (SELECT i.id
-                                           FROM invoices i
-                                           WHERE i.employee_id <> ${employeeId})
-            );
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT *
+          FROM store_products sp
+          WHERE NOT EXISTS(
+                  SELECT *
+                  FROM sales s
+                  WHERE s.store_product_upc = sp.upc
+                    AND s.invoice_id NOT IN (SELECT i.id
+                                             FROM invoices i
+                                             WHERE i.employee_id <> $1)
+              );
+      `,
+      values: [employeeId]
+    });
 
     return rows;
   }
@@ -95,33 +98,39 @@ export class StoreProductService {
 
   // @Dmytro H. - Q2
   public async getCategoryAveragePrice(categoryName: string): Promise<CategoryAveragePrice> {
-    const {rows} = await pool.query(`
-        SELECT c.name                AS category_name,
-               AVG(sp.selling_price) AS avg_selling_price
-        FROM categories AS c
-                 JOIN products AS p ON c.id = p.category_id
-                 JOIN store_products AS sp ON p.id = sp.product_id
-        WHERE c.name = ${categoryName}
-        GROUP BY c.name;
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT c.name                AS category_name,
+                 AVG(sp.selling_price) AS avg_selling_price
+          FROM categories AS c
+                   JOIN products AS p ON c.id = p.category_id
+                   JOIN store_products AS sp ON p.id = sp.product_id
+          WHERE c.name = $1
+          GROUP BY c.name;
+      `,
+      values: [categoryName]
+    });
 
     return rows[0];
   }
 
 
   public async getProductsByCategoryName(categoryName: string): Promise<ProductsByCategories[]> {
-    const {rows} = await pool.query(`
-        SELECT sp.upc            AS upc,
-               sp.selling_price  AS selling_price,
-               sp.is_promotional AS is_promotional,
-               p.name            AS name
-        FROM store_products AS sp
-                 JOIN products AS p ON sp.product_id = p.id
-                 JOIN categories AS c ON p.category_id = c.id
-        WHERE c.name = ${categoryName}
-        ORDER BY p.name DESC;
+    const {rows} = await pool.query({
+      text: `
+          SELECT sp.upc            AS upc,
+                 sp.selling_price  AS selling_price,
+                 sp.is_promotional AS is_promotional,
+                 p.name            AS name
+          FROM store_products AS sp
+                   JOIN products AS p ON sp.product_id = p.id
+                   JOIN categories AS c ON p.category_id = c.id
+          WHERE c.name = $1
+          ORDER BY p.name DESC;
 
-    `);
+      `,
+      values: [categoryName],
+    });
 
     return rows;
   }
@@ -138,15 +147,18 @@ export class StoreProductService {
   }
 
   public async findStoreProductInfoByUPC(upc: string): Promise<StoreProductInfo[]> {
-    const {rows} = await pool.query(`
-        SELECT sp.selling_price AS selling_price,
-               sp.amount        AS amount,
-               p.name           AS name,
-               p.description    AS description
-        FROM store_products AS sp
-                 JOIN products AS p ON sp.product_id = p.id
-        WHERE sp.upc = ${upc};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT sp.selling_price AS selling_price,
+                 sp.amount        AS amount,
+                 p.name           AS name,
+                 p.description    AS description
+          FROM store_products AS sp
+                   JOIN products AS p ON sp.product_id = p.id
+          WHERE sp.upc = $1;
+      `,
+      values: [upc]
+    });
 
     return rows;
   }
@@ -198,12 +210,15 @@ export class StoreProductService {
   }
 
   public async getSumOfTotalSoldStoreProducts(start: string, end: string): Promise<number> {
-    const {rows} = await pool.query(`
-        SELECT SUM(total)
-        FROM invoices
-        WHERE print_date >= ${start}
-          AND print_date < ${end};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT SUM(total)
+          FROM invoices
+          WHERE print_date >= $1
+            AND print_date < $2;
+      `,
+      values: [start, end]
+    });
 
     return rows[0];
   }
@@ -213,16 +228,19 @@ export class StoreProductService {
     start: string,
     end: string
   ): Promise<number> {
-    const {rows} = await pool.query(`
-        SELECT SUM(s.amount)
-        FROM sales AS s
-                 JOIN store_products AS sp ON s.store_product_upc = sp.upc
-                 JOIN products AS p ON sp.product_id = p.id
-                 JOIN invoices AS i ON s.invoice_id = i.id
-        WHERE p.name = ${productName}
-          AND i.print_date >= ${start}
-          AND i.print_date < ${end};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT SUM(s.amount)
+          FROM sales AS s
+                   JOIN store_products AS sp ON s.store_product_upc = sp.upc
+                   JOIN products AS p ON sp.product_id = p.id
+                   JOIN invoices AS i ON s.invoice_id = i.id
+          WHERE p.name = $1
+            AND i.print_date >= $2
+            AND i.print_date < $3;
+      `,
+      values: [productName, start, end]
+    });
 
     return rows[0];
   }
@@ -232,15 +250,18 @@ export class StoreProductService {
     start: string,
     end: string,
   ): Promise<number> {
-    const {rows} = await pool.query(`
-        SELECT SUM(i.total)
-        FROM invoices AS i
-                 JOIN employees AS e ON i.employee_id = e.id
-        WHERE e.last_name = ${cashier_last_name}
-          AND e.role = 'CASHIER'
-          AND i.print_date >= ${start}
-          AND i.print_date < ${end};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT SUM(i.total)
+          FROM invoices AS i
+                   JOIN employees AS e ON i.employee_id = e.id
+          WHERE e.last_name = $1
+            AND e.role = 'CASHIER'
+            AND i.print_date >= $2
+            AND i.print_date < $3;
+      `,
+      values: [cashier_last_name, start, end]
+    });
 
     return rows[0];
   }
