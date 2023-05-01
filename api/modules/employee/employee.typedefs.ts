@@ -20,6 +20,13 @@ export interface Employee extends EmployeeBase {
   password: string;
 }
 
+export interface EmployeesPhoneNumberAndAddress {
+  phone_number: string;
+  city: string;
+  street: string;
+  zip_code: string;
+}
+
 export enum EmployeeRole {
   Manager = 'MANAGER',
   Cashier = 'CASHIER',
