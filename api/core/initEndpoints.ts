@@ -1,28 +1,26 @@
-import {app} from "../index";
-import {employeeRepoEndpoints} from "./endpoints/repo/employeeRepoEndpoints";
-import {categoryRepoEndpoints} from "./endpoints/repo/categoryRepoEndpoints";
-import {productRepoEndpoints} from "./endpoints/repo/productRepoEndpoints";
-import {storeProductRepoEndpoints} from "./endpoints/repo/storeProductRepoEndpoints";
-import {saleRepoEndpoints} from "./endpoints/repo/saleRepoEndpoints";
-import {invoiceRepoEndpoints} from "./endpoints/repo/invoiceRepoEndpoints";
-import {customerCardRepoEndpoints} from "./endpoints/repo/customerCardRepoEndpoints";
-import {employeeServiceEndpoints} from "./endpoints/service/employeeServiceEndpoints";
-import {categoryServiceEndpoints} from "./endpoints/service/categoryServiceEndpoitns";
-import {salesServiceEndpoints} from "./endpoints/service/salesServiceEndpoints";
-import {storeProductServiceEndpoints} from "./endpoints/service/storeProductServiceEndpoints";
+import {makeEmployeeBaseEndpoints} from "./endpoints/base/employee.endpoints";
+import {makeCategoryBaseEndpoints} from "./endpoints/base/category.endpoints";
+import {makeProductBaseEndpoints} from "./endpoints/base/product.endpoints";
+import {makeStoreProductBaseEndpoints} from "./endpoints/base/storeProduct.endpoints";
+import {makeSaleBaseEndpoints} from "./endpoints/base/sale.endpoints";
+import {makeInvoiceBaseEndpoints} from "./endpoints/base/invoice.endpoints";
+import {makeCustomerCardBaseEndpoints} from "./endpoints/base/customerCard.endpoints";
+import {makeEmployeeEndpoints} from "./endpoints/advanced/employee.endpoints";
+import {makeCategoryEndpoints} from "./endpoints/advanced/category.endpoitns";
+import {makeSalesEndpoints} from "./endpoints/advanced/sales.endpoints";
+import {makeStoreProductEndpoints} from "./endpoints/advanced/storeProduct.endpoints";
 
 export const initEndpoints = (): void => {
-    employeeRepoEndpoints();
-    categoryRepoEndpoints();
-    productRepoEndpoints();
-    storeProductRepoEndpoints();
-    saleRepoEndpoints();
-    invoiceRepoEndpoints();
-    customerCardRepoEndpoints()
-    employeeServiceEndpoints();
+    makeEmployeeBaseEndpoints();
+    makeCategoryBaseEndpoints();
+    makeProductBaseEndpoints();
+    makeStoreProductBaseEndpoints();
+    makeSaleBaseEndpoints();
+    makeInvoiceBaseEndpoints();
+    makeCustomerCardBaseEndpoints()
 
-    categoryServiceEndpoints();
-    employeeServiceEndpoints();
-    salesServiceEndpoints();
-    storeProductServiceEndpoints();
+    makeCategoryEndpoints();
+    makeEmployeeEndpoints();
+    makeSalesEndpoints();
+    makeStoreProductEndpoints();
 };

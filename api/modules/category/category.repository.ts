@@ -15,11 +15,14 @@ export class CategoryRepository {
   }
 
   public async findById(id: number): Promise<Category> {
-    const {rows} = await pool.query<Category>(`
-        SELECT *
-        FROM categories
-        WHERE id = ${id};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          SELECT *
+          FROM categories
+          WHERE id = $1
+      `,
+      values: [id],
+    });
 
     return rows[0];
   }
@@ -35,30 +38,39 @@ export class CategoryRepository {
   }
 
   public async updateById(id: number, name: string): Promise<Category> {
-    const {rows} = await pool.query(`
-        UPDATE categories
-        SET name = '${name}'
-        WHERE id = ${id};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          UPDATE categories
+          SET name = $1
+          WHERE id = $2
+      `,
+      values: [name, id],
+    });
 
     return rows[0];
   }
 
   public async create(name: string): Promise<Category> {
-    const {rows} = await pool.query(`
-        INSERT INTO categories (name)
-        VALUES (${name});
-    `);
+    const {rows} = await pool.query({
+      text: `
+          INSERT INTO categories (name)
+          VALUES ($1)
+      `,
+      values: [name],
+    });
 
     return rows[0];
   }
 
   public async destroyById(id: number): Promise<boolean> {
-    const {rows} = await pool.query(`
-        DELETE
-        FROM categories
-        WHERE id = ${id};
-    `);
+    const {rows} = await pool.query({
+      text: `
+          DELETE
+          FROM categories
+          WHERE id = $1
+      `,
+      values: [id],
+    });
 
     return rows.length !== 0;
   }

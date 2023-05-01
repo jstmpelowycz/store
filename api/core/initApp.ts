@@ -1,7 +1,7 @@
 import express, {Express, json, urlencoded} from "express";
 
 const MIDDLEWARES = [
-  json,
+  json(),
   urlencoded({
     extended: true,
   }),

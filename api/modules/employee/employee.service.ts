@@ -1,8 +1,9 @@
 import {bcryptClient} from "../../auth/bcrypt.client";
 import {EmployeeRepository} from "./employee.repository";
-import {CreateEmployeeFields, Employee} from "./employee.typedefs";
+import {CreateEmployeeFields, Employee, EmployeesPhoneNumberAndAddress} from "./employee.typedefs";
 import {Throwable} from "../../api.typedefs";
 import {EmployeeError} from "./employee.constants";
+import {pool} from "../../index";
 
 export class EmployeeService {
   private readonly encoder = bcryptClient;
@@ -74,5 +75,31 @@ export class EmployeeService {
       password: encodedPassword,
       ...rest,
     };
+  }
+
+  public async getEmployeesPhoneNumberAndAddressByLastName(
+    last_name: string,
+  ): Promise<EmployeesPhoneNumberAndAddress> {
+    const {rows} = await pool.query({
+      text: `
+          SELECT phone_number, city, street, zip_code
+          FROM employees
+          WHERE last_name = $1;
+      `,
+      values: [last_name]
+    });
+
+    return rows[0];
+  }
+
+  public async findAllCashiers(): Promise<Employee[]> {
+    const {rows} = await pool.query(`
+        SELECT *
+        FROM employees
+        WHERE role = 'CASHIER'
+        ORDER BY last_name;
+    `);
+
+    return rows;
   }
 }

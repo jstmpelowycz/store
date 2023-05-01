@@ -1,18 +1,19 @@
 // @ts-ignore
-import React from "react";
+import React, {FC, memo} from "react";
 import {Col, Button, Row, Container, Card, Form} from "react-bootstrap";
 
-export const Login = () => {
+interface Props {
+  onSwitchAuthView: () => void;
+}
+
+export const Login: FC<Props> = ({onSwitchAuthView}) => {
   return (
     <Container>
       <Row className="vh-100 d-flex justify-content-center align-items-center">
         <Col md={8} lg={6} xs={12}>
-          <div className="border border-3 border-primary"></div>
           <Card className="shadow">
             <Card.Body>
               <div className="mb-3 mt-md-4">
-                <h2 className="fw-bold mb-2 text-uppercase ">Brand</h2>
-                <p className=" mb-5">Please enter your login and password!</p>
                 <div className="mb-3">
                   <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -29,16 +30,6 @@ export const Login = () => {
                       <Form.Label>Password</Form.Label>
                       <Form.Control type="password" placeholder="Password"/>
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="formBasicCheckbox"
-                    >
-                      <p className="small">
-                        <a className="text-primary" href="#!">
-                          Forgot password?
-                        </a>
-                      </p>
-                    </Form.Group>
                     <div className="d-grid">
                       <Button variant="primary" type="submit">
                         Login
@@ -48,7 +39,11 @@ export const Login = () => {
                   <div className="mt-3">
                     <p className="mb-0  text-center">
                       Don't have an account?{" "}
-                      <a href="{''}" className="text-primary fw-bold">
+                      <a
+                        href=""
+                        className="text-primary fw-bold"
+                        onClick={onSwitchAuthView}
+                      >
                         Sign Up
                       </a>
                     </p>
@@ -61,4 +56,4 @@ export const Login = () => {
       </Row>
     </Container>
   );
-}
+};
