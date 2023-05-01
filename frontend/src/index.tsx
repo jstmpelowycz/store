@@ -1,5 +1,6 @@
 // @ts-ignore
 import React, {StrictMode} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {render} from 'react-dom';
 
 // @ts-ignore
