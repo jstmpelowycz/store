@@ -43,7 +43,7 @@ export class CustomerCardRepository {
     const {rows} = await pool.query({
       text: `
           UPDATE customer_cards
-          SET ${buildUpdateQuerySetPart(fields, 1)}
+          SET ${buildUpdateQuerySetPart(fields)}
           WHERE id = $1;
       `,
       values: [id, ...excludeEmptyValues(fields)]
