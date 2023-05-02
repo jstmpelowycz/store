@@ -26,8 +26,11 @@ export const Toolbar = () => {
                         <Nav.Link as={Link} to="/categories">
                             Categories
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/store-products">
+                        <Nav.Link as={Link} to="/products">
                             Products
+                        </Nav.Link>
+                        <Nav.Link as={Link} to="/store-products">
+                            Store Products
                         </Nav.Link>
                         <Nav.Link as={Link} to="/invoices">
                             Invoices

@@ -17,6 +17,8 @@ import {StoreProductsPage} from "./components/StoreProductsComps/StoreProductsPa
 import {InvoicesPage} from "./components/InvoicesComps/InvoicesPage.tsx";
 // @ts-ignore
 import {CustomerCardPage} from "./components/CustomerCardComps/CustomerCardPage.tsx";
+// @ts-ignore
+import {ProductsPage} from "./components/ProductsComps/ProductsPage.tsx";
 
 export const App = () => {
     const {currentEmployee} = useAppContext();
@@ -33,6 +35,7 @@ export const App = () => {
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/employees" element={<EmployeesPage />} />
                                 <Route path="/categories" element={<CategoriesPage />} />
+                                <Route path="/products" element={<ProductsPage />} />
                                 <Route path="/store-products" element={<StoreProductsPage />} />
                                 <Route path="/invoices" element={<InvoicesPage />} />
                                 <Route path="/customer-cards" element={<CustomerCardPage />} />
