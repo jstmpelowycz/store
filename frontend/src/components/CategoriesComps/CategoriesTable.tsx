@@ -18,10 +18,6 @@ export const CategoriesTable: FC = () => {
     })
   }, [])
 
-  if (!columnNames.length || !records.length) {
-    return <h1>Wait...</h1>;
-  }
-
   return (
     <DynamicTable
       columnNames={columnNames}
