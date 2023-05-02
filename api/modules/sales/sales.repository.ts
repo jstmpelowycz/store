@@ -16,6 +16,19 @@ export class SalesRepository {
     return rows[0];
   }
 
+  public async findByInvoiceId(invoiceId: string): Promise<Sale> {
+    const {rows} = await pool.query({
+      text: `
+          SELECT *
+          FROM sales
+          WHERE invoice_id = $1;
+      `,
+      values: [invoiceId]
+    });
+
+    return rows[0];
+  }
+
   public async findAll(): Promise<Sale[]> {
     const {rows} = await pool.query(`
         SELECT *

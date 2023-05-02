@@ -49,6 +49,7 @@ export class StoreProductRepository {
     const {rows} = await pool.query(`
         SELECT *
         FROM store_products
+        JOIN products p on p.id = store_products.product_id
         ORDER BY selling_price;
     `);
 

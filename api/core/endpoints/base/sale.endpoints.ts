@@ -19,6 +19,22 @@ export const makeSaleBaseEndpoints = (): void => {
       })
   })
 
+  app.get('/sales/:invoice_id', (req, res) => {
+    const {invoice_id} = req.params;
+    repository.findByInvoiceId(invoice_id)
+        .then(response => {
+          res.status(200).json({
+            data: response
+          })
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: `An error occurred while fetching sales by invoice id ${invoice_id}.`,
+            error: error
+          })
+        })
+  })
+
   app.post('/sales', (req, res) => {
     const {
       store_product_upc,
