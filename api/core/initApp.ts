@@ -7,7 +7,7 @@ const MIDDLEWARES = [
     extended: true,
   }),
   cors({
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
