@@ -16,7 +16,7 @@ interface Props {
 export const Login: FC<Props> = ({onSwitchAuthView}) => {
   const [email, setEmail] = useState<Maybe<string>>(null);
   const [password, setPassword] = useState<Maybe<string>>(null);
-  const {setCurrentEmployee} = useAppContext();
+  const {setCurrentEmployee, setIsManager} = useAppContext();
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -24,6 +24,7 @@ export const Login: FC<Props> = ({onSwitchAuthView}) => {
     const {data: employee} = await login({email, password});
 
     setCurrentEmployee(employee);
+    setIsManager(employee.role == "MANAGER");
   };
 
   return (
