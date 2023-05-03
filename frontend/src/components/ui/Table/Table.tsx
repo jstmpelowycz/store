@@ -5,6 +5,8 @@ import {parseColumnNames, parseRecords} from "./Table.helpers";
 import {DynamicTable} from "../DynamicTable/DynamicTable";
 import {isArrayEmpty} from "../../../helpers/functional";
 import {Placeholder} from "../Placeholder/Placeholder";
+import {FloatingButton} from "../FloatingButton/FloatingButton";
+import {pdfClient} from "../../../print/pdfClient";
 
 interface Props<E extends AnyObject> {
   name: string;
@@ -26,15 +28,25 @@ export function Table<E extends AnyObject>(props: Props<E>) {
     });
   }, []);
 
+  const handleSaveTable = async () => {
+    await pdfClient.saveAsPdf(name);
+  };
+
   if (isArrayEmpty(columnNames) || isArrayEmpty(records)) {
     return <Placeholder/>;
   }
 
   return (
-    <DynamicTable
-      tableName={name}
-      columnNames={columnNames}
-      records={records}
-    />
+    <>
+      <DynamicTable
+        tableName={name}
+        columnNames={columnNames}
+        records={records}
+      />
+      <FloatingButton
+        title="Save"
+        onClick={handleSaveTable}
+      />
+    </>
   );
 }

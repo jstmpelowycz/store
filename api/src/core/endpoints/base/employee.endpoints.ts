@@ -3,7 +3,7 @@ import {EmployeeRepository} from "../../../modules/employee/employee.repository"
 import {Employee, EmployeeRole} from "../../../modules/employee/employee.typedefs";
 import {omit} from "lodash";
 
-const filterPassword = (obj: Employee) => {
+export const filterPassword = (obj: Employee) => {
   return omit(obj, 'password');
 }
 

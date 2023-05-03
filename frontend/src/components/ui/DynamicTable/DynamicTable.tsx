@@ -11,7 +11,10 @@ export const DynamicTable: FC<Props> = ({columnNames, records, tableName}) => {
   return (
     <Container fluid className="p-0">
       <h1>{tableName}</h1>
-      <Table className="table-bordered table-striped w-100 full-width-table">
+      <Table
+        className="table-bordered table-striped w-100 full-width-table"
+        data-printable
+      >
         <thead>
         <tr>
           {columnNames.map((columnName, index) => (

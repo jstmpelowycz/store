@@ -31,13 +31,13 @@ const getAllSortedByAmount: RF<StoreProduct[]> = async () => {
 
 const getManyByCategoryName: RF<StoreProduct[]> = async (categoryName: string) => {
   return makeRequest(RequestType.Get, {
-    url: buildUrl(REQUEST_URLS.storeProducts.default, [categoryName]),
+    url: buildUrl(REQUEST_URLS.storeProducts.byCategoryName, [categoryName]),
   });
 };
 
-const getInfo: RF<StoreProductInfo> = async (upc: StoreProduct['upc']) => {
+const getInfo: RF<StoreProductInfo[]> = async (upc: StoreProduct['upc']) => {
   return makeRequest(RequestType.Get, {
-    url: buildUrl(REQUEST_URLS.storeProducts.default, [upc]),
+    url: buildUrl(REQUEST_URLS.storeProducts.info, [upc]),
   });
 };
 

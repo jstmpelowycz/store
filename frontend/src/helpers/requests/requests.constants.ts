@@ -22,10 +22,16 @@ export const REQUEST_URLS = {
   storeProducts: {
     default: '/store-products',
     sortedByAmount: '/store-products/sorted-by-amount',
+    info: '/store-products/get-info',
+    byCategoryName: '/store-products/by-category-name',
   },
 
   customerCards: '/customer-cards',
   products: '/products',
-  invoices: '/invoices',
+  invoices: {
+    default: '/invoices',
+    byPeriod: '/invoices/by-period',
+    byCashierAndPeriod: '/invoices/by-cashier-and-period',
+  },
   categories: '/categories',
 };
