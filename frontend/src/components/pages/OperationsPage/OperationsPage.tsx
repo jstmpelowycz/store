@@ -4,6 +4,8 @@ import {Button} from "react-bootstrap";
 import {storeProductControllers} from "../../../controllers/storeProduct.controllers";
 import {JsonModal} from "../../ui/JsonModal/JsonModal";
 import {employeeControllers} from "../../../controllers/employee.controllers";
+import {invoiceControllers} from "../../../controllers/invoice.controllers";
+import {parsePromptQuery} from "../../../helpers/functional";
 
 export const OperationsPage: FC = () => {
   const [visibleData, setVisibleData] = useState<AnyObject | null>(null);
@@ -13,14 +15,16 @@ export const OperationsPage: FC = () => {
   };
 
   const handleGetStoreProductInfo = async () => {
-    const [info] = await storeProductControllers.getInfo('05ac77c8-4c1');
+    const result = prompt('Enter UPC');
+    const [info] = await storeProductControllers.getInfo(result);
 
     setVisibleData(info);
   };
 
 
   const handleGetStoreProductsByCategoryName = async () => {
-    const storeProducts = await storeProductControllers.getManyByCategoryName('Y');
+    const result = prompt('Enter category name');
+    const storeProducts = await storeProductControllers.getManyByCategoryName(result);
 
     setVisibleData(storeProducts)
   };
@@ -32,10 +36,42 @@ export const OperationsPage: FC = () => {
   };
 
   const handleGetEmployeeContactsByLastName = async () => {
-    const contacts = await employeeControllers.getContactsByLastName('Doe');
+    const result = prompt('Enter employee last name');
+    const contacts = await employeeControllers.getContactsByLastName(result);
 
     setVisibleData(contacts);
-  }
+  };
+
+  const handleGetAllInvoicesByPeriod = async () => {
+    const unparsedResult = prompt('Enter start and end date');
+
+    const [startAt, endAt] = parsePromptQuery(unparsedResult);
+
+    if (startAt && endAt) {
+      const invoices = await invoiceControllers.getAllByPeriod({
+        startAt,
+        endAt,
+      });
+
+      setVisibleData(invoices);
+    }
+  };
+
+  const handleGetAllInvoicesByCashierAndPeriod = async () => {
+    const unparsedResult = prompt('Enter cashier last name, start and end date');
+
+    const [cashierLastName, startAt, endAt] = parsePromptQuery(unparsedResult);
+
+    if (startAt && endAt) {
+      const invoices = await invoiceControllers.getAllByCashierAndPeriod({
+        cashierLastName,
+        startAt,
+        endAt,
+      });
+
+      setVisibleData(invoices);
+    }
+  };
 
   return (
     <div className="d-flex justify-content-center">
@@ -61,13 +97,23 @@ export const OperationsPage: FC = () => {
             </div>
 
             <h3 className="mb-2">Employee</h3>
-            <div className="d-flex gap-2">
+            <div className="d-flex gap-2 mb-3">
               <Button onClick={handleGetEmployeeContactsByLastName}>
                 Get employee contact by last name
+              </Button>
+            </div>
+
+            <h3 className="mb-2">Invoices</h3>
+            <div className="d-flex gap-2 mb-3">
+              <Button onClick={handleGetAllInvoicesByPeriod}>
+                Get all invoices by period
+              </Button>
+              <Button onClick={handleGetAllInvoicesByCashierAndPeriod}>
+                Get all invoices by cashier and period
               </Button>
             </div>
           </div>
         )}
     </div>
   )
-}
+};

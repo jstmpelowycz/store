@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas";
 import Pdf from "jspdf";
 
-export const saveAsPdf = async (name: string): Promise<void> => {
+const saveAsPdf = async (name: string): Promise<void> => {
   const elements = document.querySelectorAll('[data-printable]');
   const element = elements[0];
 
@@ -18,4 +18,8 @@ export const saveAsPdf = async (name: string): Promise<void> => {
 
   pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
   pdf.save(`${name}.pdf`);
+};
+
+export const pdfClient = {
+  saveAsPdf
 };

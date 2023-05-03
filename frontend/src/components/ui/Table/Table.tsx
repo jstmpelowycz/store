@@ -6,7 +6,7 @@ import {DynamicTable} from "../DynamicTable/DynamicTable";
 import {isArrayEmpty} from "../../../helpers/functional";
 import {Placeholder} from "../Placeholder/Placeholder";
 import {FloatingButton} from "../FloatingButton/FloatingButton";
-import {saveAsPdf} from "../../../print/pdfClient";
+import {pdfClient} from "../../../print/pdfClient";
 
 interface Props<E extends AnyObject> {
   name: string;
@@ -28,6 +28,10 @@ export function Table<E extends AnyObject>(props: Props<E>) {
     });
   }, []);
 
+  const handleSaveTable = async () => {
+    await pdfClient.saveAsPdf(name);
+  };
+
   if (isArrayEmpty(columnNames) || isArrayEmpty(records)) {
     return <Placeholder/>;
   }
@@ -39,10 +43,9 @@ export function Table<E extends AnyObject>(props: Props<E>) {
         columnNames={columnNames}
         records={records}
       />
-
       <FloatingButton
         title="Save"
-        onClick={() => saveAsPdf(name)}
+        onClick={handleSaveTable}
       />
     </>
   );

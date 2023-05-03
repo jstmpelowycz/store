@@ -27,6 +27,10 @@ export const REQUEST_URLS = {
 
   customerCards: '/customer-cards',
   products: '/products',
-  invoices: '/invoices',
+  invoices: {
+    default: '/invoices',
+    byPeriod: '/invoices/by-period',
+    byCashierAndPeriod: '/invoices/by-cashier-and-period',
+  },
   categories: '/categories',
 };
