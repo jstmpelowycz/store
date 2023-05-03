@@ -15,6 +15,7 @@ export const REQUEST_URLS = {
   employees: '/employees',
   employee: {
     login: '/employee/login',
+    signup: '/employee/signup',
     contacts: '/employee/contacts'
   },
 
