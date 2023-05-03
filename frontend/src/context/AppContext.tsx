@@ -1,14 +1,15 @@
-import {createContext, useContext, useState} from "react";
-import {Maybe, SetState} from "../typings/typedefs";
-import {Employee} from "../typings/employee.typedefs";
+import {FC, PropsWithChildren, createContext, useContext, useState} from "react";
+import {SetState} from "../typings/typedefs";
+import {Employee} from "../typings/entities/employee.typedefs";
 
-export const emptyFunction = () => {};
+export const emptyFunction = () => {
+};
 
 interface AppContextInterface {
-  currentEmployee: Maybe<Employee>;
-  isManager: Boolean;
-  setCurrentEmployee: SetState<Employee>;
-  setIsManager: SetState<Boolean>;
+  currentEmployee: Employee | null;
+  isManager: boolean;
+  setCurrentEmployee: SetState<Employee | null>;
+  setIsManager: SetState<boolean>;
 }
 
 const AppContext = createContext<AppContextInterface>({
@@ -18,16 +19,16 @@ const AppContext = createContext<AppContextInterface>({
   setIsManager: emptyFunction,
 });
 
-const AppContextProvider = ({children}) => {
+const AppContextProvider: FC<PropsWithChildren> = ({children}) => {
   const [
     currentEmployee,
     setCurrentEmployee,
-  ] = useState<Maybe<Employee>>(null);
+  ] = useState<Employee | null>(null);
 
   const [
     isManager,
     setIsManager,
-  ] = useState<Boolean>(false);
+  ] = useState<boolean>(false);
 
   return (
     <AppContext.Provider value={{

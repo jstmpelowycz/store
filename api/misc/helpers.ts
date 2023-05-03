@@ -1,4 +1,4 @@
-import {AnyObject} from "../api.typedefs";
+import {AnyObject} from "../typings/api.typedefs";
 
 const asSortedEntries = <V>(object: Record<string, V>): Array<[string, V]> => {
   return Object.entries(object).sort(([keyA], [keyB]) => (
