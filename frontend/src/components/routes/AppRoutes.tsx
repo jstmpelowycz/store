@@ -1,14 +1,15 @@
 import {FC} from "react";
 import {Route, Routes} from "react-router-dom";
-import {HomePage} from "../pages/HomePage";
-import {CategoriesPage} from "../pages/CategoriesPage";
-import {ProductsPage} from "../pages/ProductsPage";
-import {StoreProductsPage} from "../pages/StoreProductsPage";
-import {InvoicesPage} from "../pages/InvoicesPage";
-import {CustomerCardPage} from "../pages/CustomerCardPage";
-import {EmployeesPage} from "../pages/EmployeesPage";
+import {HomePage} from "../pages/HomePage/HomePage";
+import {CategoriesPage} from "../pages/CategoriesPage/CategoriesPage";
+import {ProductsPage} from "../pages/ProductsPage/ProductsPage";
+import {StoreProductsPage} from "../pages/StoreProductsPage/StoreProductsPage";
+import {InvoicesPage} from "../pages/InvoicesPage/InvoicesPage";
+import {CustomerCardPage} from "../pages/CustomerCardPage/CustomerCardPage";
+import {EmployeesPage} from "../pages/EmployeesPage/EmployeesPage";
 import {useIsManager} from "../../hooks/useIsManager";
-import {ProfilePage} from "../pages/ProfilePage";
+import {ProfilePage} from "../pages/ProfilePage/ProfilePage";
+import {OperationsPage} from "../pages/OperationsPage/OperationsPage";
 
 export const AppRoutes: FC = () => {
   const isManager = useIsManager();
@@ -22,8 +23,11 @@ export const AppRoutes: FC = () => {
       <Route path="/store-products" element={<StoreProductsPage/>}/>
       <Route path="/invoices" element={<InvoicesPage/>}/>
       <Route path="/customer-cards" element={<CustomerCardPage/>}/>
+      <Route path="/operations" element={<OperationsPage/>}/>
 
-      {isManager && <Route path="/employees" element={<EmployeesPage/>}/>}
+      {isManager && (
+        <Route path="/employees" element={<EmployeesPage/>}/>
+      )}
     </Routes>
   )
 }

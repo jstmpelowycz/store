@@ -1,10 +1,11 @@
 import {FC} from 'react';
-import {Button, Modal} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import {AnyFunction, AnyObject} from "../../../typings/typedefs";
 import './styles.css';
+import ReactJson from "react-json-view";
 
 interface Props {
-  data: AnyObject | null;
+  data: AnyObject;
   isOpen: boolean;
   onClose: AnyFunction;
 }
@@ -17,24 +18,15 @@ export const JsonModal: FC<Props> = (props) => {
   }
 
   return (
-      <Modal.Dialog className="modal-content">
-        <Modal.Header closeButton onClick={onClose}>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <p>{JSON.stringify(data)}</p>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={onClose}
-          >
-            Close
-          </Button>
-          <Button variant="primary">Save changes</Button>
-        </Modal.Footer>
-      </Modal.Dialog>
+    <div className="wrapper">
+      <div className="modal-content">
+        <div className="overflow-scroll mb-md-5">
+          <ReactJson src={data!}/>
+        </div>
+        <Button onClick={onClose}>
+          Close
+        </Button>
+      </div>
+    </div>
   );
 };

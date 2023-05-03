@@ -44,6 +44,10 @@ export const Toolbar = () => {
               Customer Cards
             </Nav.Link>
 
+            <Nav.Link as={Link} to="/operations">
+              Operations
+            </Nav.Link>
+
             <Nav.Link as={Link} to="/profile">
               Profile
             </Nav.Link>

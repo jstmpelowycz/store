@@ -74,7 +74,7 @@ export const makeStoreProductEndpoints = (): void => {
       })
   })
 
-  app.get('/store-products/:categoryName', (req, res) => {
+  app.get('/store-products/by-category-name/:categoryName', (req, res) => {
     const {categoryName} = req.params;
 
     const service = new StoreProductService();
@@ -94,7 +94,7 @@ export const makeStoreProductEndpoints = (): void => {
       })
   })
 
-  app.get('/store-products/:upc', (req, res) => {
+  app.get('/store-products/get-info/:upc', (req, res) => {
     const {upc} = req.params;
 
     service

@@ -21,6 +21,8 @@ export const REQUEST_URLS = {
   storeProducts: {
     default: '/store-products',
     sortedByAmount: '/store-products/sorted-by-amount',
+    info: '/store-products/get-info',
+    byCategoryName: '/store-products/by-category-name',
   },
 
   customerCards: '/customer-cards',
