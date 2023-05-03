@@ -1,10 +1,12 @@
 import {Link} from 'react-router-dom';
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import {useAppContext} from "../../../context/AppContext";
+import {useIsManager} from "../../../hooks/useIsManager";
 
 
 export const Toolbar = () => {
   const {setCurrentEmployee} = useAppContext();
+  const isManager = useIsManager();
 
   const handleLogout = () => {
     setCurrentEmployee(null);
@@ -17,9 +19,11 @@ export const Toolbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav" role="navigation">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/employees">
-              Employees
-            </Nav.Link>
+            {isManager && (
+              <Nav.Link as={Link} to="/employees">
+                Employees
+              </Nav.Link>
+            )}
 
             <Nav.Link as={Link} to="/categories">
               Categories
@@ -39,12 +43,18 @@ export const Toolbar = () => {
             <Nav.Link as={Link} to="/customer-cards">
               Customer Cards
             </Nav.Link>
+
+            <Nav.Link as={Link} to="/profile">
+              Profile
+            </Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link
               href="#logout"
               onClick={handleLogout}
-            >Logout</Nav.Link>
+            >
+              Logout
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

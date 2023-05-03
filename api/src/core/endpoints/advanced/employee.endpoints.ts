@@ -1,5 +1,6 @@
 import {app} from "../../../index";
 import {EmployeeService} from "../../../modules/employee/employee.service";
+import {filterPassword} from "../base/employee.endpoints";
 
 export const makeEmployeeEndpoints = (): void => {
   const service = new EmployeeService();
@@ -24,7 +25,7 @@ export const makeEmployeeEndpoints = (): void => {
       .then(response => {
         res.status(200).json({
           message: "Log in succeeded.",
-          data: response,
+          data: filterPassword(response),
         })
       })
       .catch(error => {
