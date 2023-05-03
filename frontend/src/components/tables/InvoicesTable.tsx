@@ -7,6 +7,7 @@ export const InvoicesTable: FC = () => {
     <Table
       name="Invoices"
       onMount={invoiceControllers.getAll}
+      onDelete={invoiceControllers.destroy}
     />
   );
 }

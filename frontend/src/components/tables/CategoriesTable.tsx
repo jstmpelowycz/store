@@ -7,6 +7,7 @@ export const CategoriesTable: FC = () => {
     <Table
       name="Categories"
       onMount={categoryControllers.getAll}
+      onDelete={categoryControllers.destroy}
     />
   );
 };

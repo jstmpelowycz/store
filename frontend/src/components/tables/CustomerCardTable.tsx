@@ -7,6 +7,7 @@ export const CustomerCardTable: FC = () => {
     <Table
       name="Customers cards"
       onMount={customerCardControllers.getAll}
+      onDelete={customerCardControllers.destroy}
     />
   );
 };

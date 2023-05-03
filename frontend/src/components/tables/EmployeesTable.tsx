@@ -7,6 +7,7 @@ export const EmployeesTable: FC = () => {
     <Table
       name="Employees"
       onMount={employeeControllers.getAll}
+      onDelete={employeeControllers.destroy}
     />
   );
 };

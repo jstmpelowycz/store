@@ -4,6 +4,10 @@ import {Table} from "../ui/Table/Table";
 
 export const ProductsTable: FC = () => {
   return (
-    <Table name='Products' onMount={productControllers.getAll}/>
+    <Table
+      name='Products'
+      onMount={productControllers.getAll}
+      onDelete={productControllers.destroy}
+    />
   );
 }
