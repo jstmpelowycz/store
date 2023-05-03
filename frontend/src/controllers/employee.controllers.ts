@@ -54,10 +54,12 @@ const getAll: RF<Employee[]> = async (cashiersOnly = false) => {
 
 const create: RF<Employee> = async (args: CreateEmployeeArgs) => {
   return makeRequest(RequestType.Post, {
-    url: REQUEST_URLS.employees,
+    url: REQUEST_URLS.employee.signup,
     body: args.fields,
   });
 };
+
+
 
 const update: RF<Employee> = async (args: UpdateEmployeeArgs) => {
   return makeRequest(RequestType.Put, {

@@ -17,6 +17,7 @@ export interface EmployeeBase {
 
 export interface Employee extends EmployeeBase {
   email: string;
+  password: string;
 }
 
 export interface EmployeesPhoneNumberAndAddress {

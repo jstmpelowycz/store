@@ -49,7 +49,7 @@ export const makeEmployeeBaseEndpoints = (): void => {
         last_name: last_name,
         patronymic: patronymic,
         role: role,
-        salary: salary,
+        salary: Number(salary),
         phone_number: phone_number,
         city: city,
         street: street,
