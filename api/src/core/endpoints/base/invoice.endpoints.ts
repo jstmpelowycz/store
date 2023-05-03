@@ -37,13 +37,13 @@ export const makeInvoiceBaseEndpoints = (): void => {
       })
       .then(response => {
         res.status(200).json({
-          message: "Sale added successfully.",
+          message: "Invoice added successfully.",
           data: response
         })
       })
       .catch(error => {
         res.status(500).json({
-          message: "An error occurred while creating sale.",
+          message: "An error occurred while creating invoice.",
           error: error
         })
       })
