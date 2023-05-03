@@ -27,7 +27,14 @@ export class SalesService {
             values: [amount, store_product_upc],
         });
 
-        const sellingPrice = rows[0];
+        const sellingPrice = Number(Object.values(rows[0]));
+
+        const promiseSale = this.salesRepository.create({
+            store_product_upc: store_product_upc,
+            invoice_id: invoice_id,
+            amount: amount,
+            selling_price: sellingPrice,
+        });
 
         await this.verifySellingAmount({
             store_product_upc,
@@ -39,12 +46,42 @@ export class SalesService {
           amount,
         })
 
-        return this.salesRepository.create({
-            store_product_upc,
-            invoice_id,
-            amount,
-            selling_price: sellingPrice,
+        await this.updateInvoiceTotal(
+            {invoice_id},
+            sellingPrice,
+        );
+
+        return promiseSale;
+    }
+
+    private async updateInvoiceTotal(
+        options: Omit<CreateSaleWithPromotionFields, 'amount' | 'store_product_upc'>,
+        sellingPrice: number,
+    ): Promise<Throwable<void>> {
+        const {invoice_id} = options;
+
+        const {rows} = await pool.query({
+            text: `
+                SELECT total
+                FROM invoices
+                WHERE id = $1
+            `,
+            values: [invoice_id]
         });
+
+        const retrievedTotal = rows[0];
+
+        const updatedTotal = Number(retrievedTotal.amount + sellingPrice);
+
+        await pool.query({
+            text: `
+                UPDATE invoices
+                SET total = $2
+                WHERE id = $1
+            `,
+            values: [invoice_id, updatedTotal]
+        })
+
     }
 
     private async updateStoredAmount(
@@ -62,8 +99,7 @@ export class SalesService {
         });
 
         const retrievedAmount = rows[0];
-
-        const updatedAmount = retrievedAmount - amount;
+        const updatedAmount = Number(retrievedAmount.amount - amount);
 
         await pool.query({
             text: `

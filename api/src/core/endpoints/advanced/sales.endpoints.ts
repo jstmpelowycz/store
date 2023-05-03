@@ -20,7 +20,7 @@ export const makeSalesEndpoints = (): void => {
       })
       .catch(error => {
         res.status(500).json({
-          message: "Sale amount is smaller than requested.",
+          message: "Stored amount is smaller than requested.",
           data: error,
         })
       });

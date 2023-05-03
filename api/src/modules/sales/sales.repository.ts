@@ -39,9 +39,10 @@ export class SalesRepository {
   }
 
   public async create(fields: CreateSaleFields): Promise<Sale> {
+    console.log(fields);
     const {rows} = await pool.query({
       text: `
-          INSERT INTO sales (store_product_upc, amount, selling_price, invoice_id)
+          INSERT INTO sales (store_product_upc, invoice_id, amount, selling_price)
           VALUES ($1, $2, $3, $4);
       `,
       values: Object.values(fields)
